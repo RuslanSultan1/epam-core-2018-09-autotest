@@ -45,7 +45,7 @@ public class Pen implements Cloneable {
     }
 
     @Override
-    protected Pen clone() {
+    public Pen clone() {
         try {
             return (Pen) super.clone();
         } catch (CloneNotSupportedException ignore) {
@@ -64,8 +64,22 @@ public class Pen implements Cloneable {
 
 class PencilCase implements Cloneable {
 
-    private Pen[] pens = new Pen[10];
+    private static int numberCreatedPencilCases = 0;
+    private final Pen[] pens = new Pen[10];
     private int cursor = 0;
+
+    public PencilCase(PencilCase other) {
+        ++numberCreatedPencilCases;
+        for (Pen pen : other.pens) {
+            if (pen != null) {
+                add(pen.clone());
+            }
+        }
+    }
+
+    public PencilCase() {
+        super();
+    }
 
     public void add(Pen pen) {
         pens[cursor] = pen;
@@ -76,34 +90,34 @@ class PencilCase implements Cloneable {
         return pens;
     }
 
-    @Override
-    protected PencilCase clone() {
-        try {
-            PencilCase clone = (PencilCase) super.clone();
-            Pen[] copyPens = Arrays.copyOf(this.pens, this.pens.length);
-            for (int i = 0; i < copyPens.length; ++i) {
-                if (copyPens[i] != null) {
-                    copyPens[i] = copyPens[i].clone();
-                }
-            }
-            clone.pens = copyPens;
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @Override
+//    protected PencilCase clone() {
+//        try {
+//            PencilCase clone = (PencilCase) super.clone();
+//            Pen[] copyPens = Arrays.copyOf(this.pens, this.pens.length);
+//            for (int i = 0; i < copyPens.length; ++i) {
+//                if (copyPens[i] != null) {
+//                    copyPens[i] = copyPens[i].clone();
+//                }
+//            }
+//            clone.pens = copyPens;
+//            return clone;
+//        } catch (CloneNotSupportedException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
 
 class Launcher {
 
     public static void main(String[] args) {
-        Pen kores = new Pen(10, "kores");
-        Pen kores2 = new Pen(-10, "kores2");
+        Pen pen1 = new Pen(10, "kores");
+        Pen pen2 = new Pen(-10, "kores2");
 
         PencilCase pCase = new PencilCase();
-        pCase.add(kores);
+        pCase.add(pen1);
 
-        PencilCase clone = pCase.clone();
+        PencilCase clone = new PencilCase(pCase);
 
         System.out.println(pCase.getPens() == clone.getPens());
         clone.getPens()[0].setPrice(11);
