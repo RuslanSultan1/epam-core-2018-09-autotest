@@ -95,10 +95,7 @@ class QueueTest {
 
         devilMethod(stringQueue);
 
-        String result = stringQueue.poll();
-
-        assertEquals(3, result.length());
-        assertTrue(stringQueue.isEmpty());
+        assertThrows(ClassCastException.class, () -> stringQueue.poll());
     }
 
     private void devilMethod(Queue queue) {

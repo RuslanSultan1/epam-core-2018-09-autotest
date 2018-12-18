@@ -1,0 +1,12 @@
+<!ELEMENT students (student)+>
+<!ELEMENT student (name, telephone, address)>
+<!ATTLIST student
+        login ID #REQUIRED
+        faculty CDATA #FIXED "mmf"
+        >
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT telephone (#PCDATA)>
+<!ELEMENT address (country, city, street)>
+<!ELEMENT country (#PCDATA)>
+<!ELEMENT city (#PCDATA)>
+<!ELEMENT street (#PCDATA)>
